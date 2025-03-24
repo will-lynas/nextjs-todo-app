@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import TodoItem from "./components/TodoItem";
 
 export const metadata: Metadata = {
   title: "Todo App",
@@ -24,13 +25,10 @@ async function createTodo(formData: FormData) {
   revalidatePath("/");
 }
 
-async function deleteTodo(formData: FormData) {
+async function deleteTodo(id: number) {
   "use server";
-  const id = formData.get("id") as string;
-  if (!id) return;
-
   await prisma.todo.delete({
-    where: { id: parseInt(id) },
+    where: { id },
   });
   revalidatePath("/");
 }
@@ -45,21 +43,12 @@ export default async function Home() {
         </h1>
         <ul className="space-y-4 mb-8">
           {todos.map((todo) => (
-            <div key={todo.id} className="flex items-center gap-2">
-              <li className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors">
-                {todo.title}
-              </li>
-              <form action={deleteTodo}>
-                <input type="hidden" name="id" value={todo.id} />
-                <button
-                  type="submit"
-                  className="h-[52px] px-3 bg-red-400 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  aria-label="Delete todo"
-                >
-                  🗑️
-                </button>
-              </form>
-            </div>
+            <TodoItem
+              key={todo.id}
+              id={todo.id}
+              title={todo.title}
+              onDelete={deleteTodo}
+            />
           ))}
         </ul>
         <form action={createTodo} className="flex gap-2">
