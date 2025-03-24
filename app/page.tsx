@@ -24,6 +24,17 @@ async function createTodo(formData: FormData) {
   revalidatePath("/");
 }
 
+async function deleteTodo(formData: FormData) {
+  "use server";
+  const id = formData.get("id") as string;
+  if (!id) return;
+
+  await prisma.todo.delete({
+    where: { id: parseInt(id) },
+  });
+  revalidatePath("/");
+}
+
 export default async function Home() {
   const todos = await getTodos();
   return (
@@ -34,12 +45,21 @@ export default async function Home() {
         </h1>
         <ul className="space-y-4 mb-8">
           {todos.map((todo) => (
-            <li
-              key={todo.id}
-              className="p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors"
-            >
-              {todo.title}
-            </li>
+            <div key={todo.id} className="flex items-center gap-2">
+              <li className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors">
+                {todo.title}
+              </li>
+              <form action={deleteTodo}>
+                <input type="hidden" name="id" value={todo.id} />
+                <button
+                  type="submit"
+                  className="h-[52px] px-3 bg-red-400 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  aria-label="Delete todo"
+                >
+                  🗑️
+                </button>
+              </form>
+            </div>
           ))}
         </ul>
         <form action={createTodo} className="flex gap-2">
