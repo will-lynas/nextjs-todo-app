@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import TodoItem from "./components/TodoItem";
 
-const title = "Todo App";
-const description = "Worlds BEST Todo App";
+const title = "ToDo App";
+const description = "World's BEST ToDo App";
 
 export const metadata: Metadata = {
   title: title,
