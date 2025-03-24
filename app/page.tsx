@@ -26,7 +26,18 @@ export const metadata: Metadata = {
 const prisma = new PrismaClient();
 
 async function getTodos() {
-  return await prisma.todo.findMany();
+  return await prisma.todo.findMany({
+    orderBy: { createdAt: "asc" },
+  });
+}
+
+async function toggleTodo(id: number, completed: boolean) {
+  "use server";
+  await prisma.todo.update({
+    where: { id },
+    data: { completed: !completed },
+  });
+  revalidatePath("/");
 }
 
 async function createTodo(formData: FormData) {
@@ -62,7 +73,9 @@ export default async function Home() {
               key={todo.id}
               id={todo.id}
               title={todo.title}
+              completed={todo.completed}
               onDelete={deleteTodo}
+              onToggle={toggleTodo}
             />
           ))}
         </ul>

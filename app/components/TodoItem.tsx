@@ -6,17 +6,30 @@ import ConfirmModal from "./ConfirmModal";
 interface TodoItemProps {
   id: number;
   title: string;
+  completed: boolean;
   onDelete: (id: number) => void;
+  onToggle: (id: number, completed: boolean) => void;
 }
 
-export default function TodoItem({ id, title, onDelete }: TodoItemProps) {
+export default function TodoItem({
+  id,
+  title,
+  completed,
+  onDelete,
+  onToggle,
+}: TodoItemProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <div className="flex items-center gap-2">
-        <li className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors">
-          {title}
+        <li
+          onClick={() => onToggle(id, completed)}
+          className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+        >
+          <span className={completed ? "line-through text-neutral-500" : ""}>
+            {title}
+          </span>
         </li>
         <button
           onClick={() => setIsModalOpen(true)}
