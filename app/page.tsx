@@ -3,9 +3,24 @@ import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import TodoItem from "./components/TodoItem";
 
+const title = "Todo App";
+const description = "Worlds BEST Todo App";
+
 export const metadata: Metadata = {
-  title: "Todo App",
-  description: "A simple todo app",
+  title: title,
+  description: description,
+  openGraph: {
+    title: title,
+    description: description,
+    images: [
+      {
+        url: "https://lumiere-a.akamaihd.net/v1/images/au_disneynews_pixar_cars_lightningmcqueen_incarticle_he_6c5d65dc.jpeg",
+        width: 1200, // Recommended width for OG images
+        height: 630, // Recommended height for OG images
+        alt: "KACHOW",
+      },
+    ],
+  },
 };
 
 const prisma = new PrismaClient();
