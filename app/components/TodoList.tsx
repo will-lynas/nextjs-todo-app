@@ -1,5 +1,6 @@
 "use client";
 
+import { useOptimistic, useRef, startTransition } from "react";
 import TodoItem from "./TodoItem";
 import { createTodo, deleteTodo, toggleTodo } from "../actions";
 
@@ -14,10 +15,36 @@ interface TodoListProps {
 }
 
 export default function TodoList({ todos }: TodoListProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const [optimisticTodos, addOptimisticTodo] = useOptimistic(
+    todos,
+    (state, newTodo: Todo) => [...state, newTodo]
+  );
+
+  async function handleCreateTodo(formData: FormData) {
+    const title = formData.get("title") as string;
+    if (!title) return;
+
+    // Create optimistic todo
+    const optimisticTodo: Todo = {
+      id: Math.random() * -1000000, // Temporary negative ID
+      title,
+      completed: false,
+    };
+
+    startTransition(() => {
+      addOptimisticTodo(optimisticTodo);
+      formRef.current?.reset();
+    });
+
+    await createTodo(formData);
+  }
+
   return (
     <>
       <ul className="space-y-4 mb-8">
-        {todos.map((todo) => (
+        {optimisticTodos.map((todo) => (
           <TodoItem
             key={todo.id}
             id={todo.id}
@@ -28,7 +55,7 @@ export default function TodoList({ todos }: TodoListProps) {
           />
         ))}
       </ul>
-      <form action={createTodo} className="flex gap-2">
+      <form ref={formRef} action={handleCreateTodo} className="flex gap-2">
         <input
           type="text"
           name="title"
