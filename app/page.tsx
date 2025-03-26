@@ -75,7 +75,7 @@ export default async function Home() {
               title={todo.title}
               completed={todo.completed}
               onDelete={deleteTodo}
-              onToggle={toggleTodo}
+              toggleTodo={toggleTodo}
             />
           ))}
         </ul>

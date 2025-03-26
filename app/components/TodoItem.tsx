@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useOptimistic, startTransition } from "react";
 import ConfirmModal from "./ConfirmModal";
 
 interface TodoItemProps {
@@ -8,7 +8,7 @@ interface TodoItemProps {
   title: string;
   completed: boolean;
   onDelete: (id: number) => void;
-  onToggle: (id: number, completed: boolean) => void;
+  toggleTodo: (id: number, completed: boolean) => void;
 }
 
 export default function TodoItem({
@@ -16,18 +16,31 @@ export default function TodoItem({
   title,
   completed,
   onDelete,
-  onToggle,
+  toggleTodo,
 }: TodoItemProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
+    completed,
+    (state: boolean) => !state
+  );
 
   return (
     <>
       <div className="flex items-center gap-2">
         <li
-          onClick={() => onToggle(id, completed)}
+          onClick={() => {
+            startTransition(() => {
+              setOptimisticCompleted(!optimisticCompleted);
+              toggleTodo(id, completed);
+            });
+          }}
           className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors cursor-pointer"
         >
-          <span className={completed ? "line-through text-neutral-500" : ""}>
+          <span
+            className={
+              optimisticCompleted ? "line-through text-neutral-500" : ""
+            }
+          >
             {title}
           </span>
         </li>
