@@ -17,9 +17,16 @@ interface TodoListProps {
 export default function TodoList({ todos }: TodoListProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [optimisticTodos, addOptimisticTodo] = useOptimistic(
+  const [optimisticTodos, updateOptimisticTodos] = useOptimistic(
     todos,
-    (state, newTodo: Todo) => [...state, newTodo]
+    (state, action: { type: "add" | "delete"; todo: Todo }) => {
+      if (action.type === "add") {
+        return [...state, action.todo];
+      } else if (action.type === "delete") {
+        return state.filter((todo) => todo.id !== action.todo.id);
+      }
+      return state;
+    }
   );
 
   async function handleCreateTodo(formData: FormData) {
@@ -34,11 +41,22 @@ export default function TodoList({ todos }: TodoListProps) {
     };
 
     startTransition(() => {
-      addOptimisticTodo(optimisticTodo);
+      updateOptimisticTodos({ type: "add", todo: optimisticTodo });
       formRef.current?.reset();
     });
 
     await createTodo(formData);
+  }
+
+  async function handleDeleteTodo(id: number) {
+    startTransition(() => {
+      updateOptimisticTodos({
+        type: "delete",
+        todo: { id, title: "", completed: false },
+      });
+    });
+
+    await deleteTodo(id);
   }
 
   return (
@@ -50,7 +68,7 @@ export default function TodoList({ todos }: TodoListProps) {
             id={todo.id}
             title={todo.title}
             completed={todo.completed}
-            onDelete={deleteTodo}
+            onDelete={handleDeleteTodo}
             toggleTodo={toggleTodo}
           />
         ))}
