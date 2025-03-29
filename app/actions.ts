@@ -2,18 +2,31 @@
 
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 const prisma = new PrismaClient();
 
+async function getUserId() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session");
+  if (!sessionCookie?.value) {
+    throw new Error("No session cookie found");
+  }
+  return sessionCookie.value;
+}
+
 export async function getTodos() {
+  const userId = await getUserId();
   return await prisma.todo.findMany({
+    where: { userId },
     orderBy: { createdAt: "asc" },
   });
 }
 
 export async function toggleTodo(id: number, completed: boolean) {
+  const userId = await getUserId();
   await prisma.todo.update({
-    where: { id },
+    where: { id, userId },
     data: { completed: !completed },
   });
   revalidatePath("/");
@@ -23,15 +36,17 @@ export async function createTodo(formData: FormData) {
   const title = formData.get("title") as string;
   if (!title) return;
 
+  const userId = await getUserId();
   await prisma.todo.create({
-    data: { title },
+    data: { title, userId },
   });
   revalidatePath("/");
 }
 
 export async function deleteTodo(id: number) {
+  const userId = await getUserId();
   await prisma.todo.delete({
-    where: { id },
+    where: { id, userId },
   });
   revalidatePath("/");
 }
