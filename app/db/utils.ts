@@ -37,10 +37,10 @@ export async function deleteTodo(id: number) {
   `;
 }
 
-export async function toggleTodo(id: number, completed: boolean) {
+export async function changeTodoState(id: number, state: boolean) {
   await sql`
     UPDATE todos
-    SET completed = ${completed}
+    SET completed = ${state}
     WHERE id = ${id}
   `;
 }

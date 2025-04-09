@@ -21,9 +21,9 @@ export async function getTodos() {
   return await db.getTodos(userId);
 }
 
-export async function toggleTodo(id: number, completed: boolean) {
+export async function toggleTodo(id: number, currentState: boolean) {
   const userId = await getUserId();
-  await db.toggleTodo(id, !completed);
+  await db.changeTodoState(id, !currentState);
   revalidatePath("/");
 }
 
