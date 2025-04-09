@@ -27,7 +27,7 @@ export default function TodoItem({
   return (
     <div className="flex items-center gap-2">
       <Button
-        variant="outline"
+        variant="listItem"
         size="lg"
         className="flex-1 justify-start"
         onClick={() => {
