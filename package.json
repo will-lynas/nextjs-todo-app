@@ -37,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.4.7",
     "node-pg-migrate": "^7.9.1",
     "tailwindcss": "^4",
     "typescript": "^5.8.2"
