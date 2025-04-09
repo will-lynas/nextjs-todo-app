@@ -28,7 +28,7 @@ export default function TodoItem({
     <div className="flex items-center gap-2">
       <Button
         variant="outline"
-        size="default"
+        size="lg"
         className="flex-1 justify-start"
         onClick={() => {
           startTransition(() => {
