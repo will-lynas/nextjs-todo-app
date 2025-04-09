@@ -6,13 +6,13 @@ export function middleware(request: NextRequest) {
   const cookie = request.cookies.get(cookie_name);
 
   if (cookie) {
-    console.log(`found uuid: ${cookie.value}`);
+    // console.log(`found uuid: ${cookie.value}`);
     return NextResponse.next();
   }
 
   const response = NextResponse.next();
   const uuid = uuidv4();
-  console.log(`setting uuid: ${uuid}`);
+  // console.log(`setting uuid: ${uuid}`);
   response.cookies.set(cookie_name, uuid);
   return response;
 }
