@@ -13,12 +13,12 @@ exports.up = (pgm) => {
     id: "id",
     title: { type: "varchar(1000)", notNull: true },
     completed: { type: "boolean", notNull: true, default: false },
-    createdAt: {
+    created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),
     },
-    userId: { type: "varchar(255)", notNull: true },
+    user_id: { type: "varchar(255)", notNull: true },
   });
 };
 
