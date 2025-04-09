@@ -1,27 +1,6 @@
-import { Metadata } from "next";
 import TodoList from "./components/TodoList";
 import { getTodos } from "./actions";
 import { ModeToggle } from "@/app/components/ModeToggle";
-
-const title = "Todo App";
-const description = "World's BEST Todo App";
-
-export const metadata: Metadata = {
-  title: title,
-  description: description,
-  openGraph: {
-    title: title,
-    description: description,
-    images: [
-      {
-        url: "https://lumiere-a.akamaihd.net/v1/images/au_disneynews_pixar_cars_lightningmcqueen_incarticle_he_6c5d65dc.jpeg",
-        width: 1200, // Recommended width for OG images
-        height: 630, // Recommended height for OG images
-        alt: "KACHOW",
-      },
-    ],
-  },
-};
 
 export default async function Home() {
   const todos = await getTodos();
