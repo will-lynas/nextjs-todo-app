@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { getTodos as dbGetTodos } from "./db/utils";
 
 const prisma = new PrismaClient();
 
@@ -17,10 +18,7 @@ async function getUserId() {
 
 export async function getTodos() {
   const userId = await getUserId();
-  return await prisma.todo.findMany({
-    where: { userId },
-    orderBy: { createdAt: "asc" },
-  });
+  return await dbGetTodos(userId);
 }
 
 export async function toggleTodo(id: number, completed: boolean) {
