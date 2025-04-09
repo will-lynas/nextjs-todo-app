@@ -3,6 +3,8 @@
 import { useOptimistic, useRef, startTransition } from "react";
 import TodoItem from "./TodoItem";
 import { createTodo, deleteTodo, toggleTodo } from "../actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Todo {
   id: number;
@@ -74,19 +76,14 @@ export default function TodoList({ todos }: TodoListProps) {
         ))}
       </ul>
       <form ref={formRef} action={handleCreateTodo} className="flex gap-2">
-        <input
+        <Input
           type="text"
           name="title"
           placeholder="Add a new todo..."
-          className="flex-1 p-2 rounded-lg bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500"
+          className="flex-1"
           required
         />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Add
-        </button>
+        <Button type="submit">Add</Button>
       </form>
     </>
   );
