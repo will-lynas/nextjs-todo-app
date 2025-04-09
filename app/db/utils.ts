@@ -36,3 +36,11 @@ export async function deleteTodo(id: number) {
     WHERE id = ${id}
   `;
 }
+
+export async function toggleTodo(id: number, completed: boolean) {
+  await sql`
+    UPDATE todos
+    SET completed = ${completed}
+    WHERE id = ${id}
+  `;
+}

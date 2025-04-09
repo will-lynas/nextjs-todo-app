@@ -23,10 +23,7 @@ export async function getTodos() {
 
 export async function toggleTodo(id: number, completed: boolean) {
   const userId = await getUserId();
-  await prisma.todo.update({
-    where: { id, userId },
-    data: { completed: !completed },
-  });
+  await db.toggleTodo(id, !completed);
   revalidatePath("/");
 }
 
