@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import TodoList from "./components/TodoList";
 import { getTodos } from "./actions";
-import { ModeToggle } from "@/app/components/mode-toggle";
+import { ModeToggle } from "@/app/components/ModeToggle";
 
 const title = "ToDo App";
 const description = "World's BEST ToDo App";
