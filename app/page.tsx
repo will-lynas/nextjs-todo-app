@@ -3,8 +3,8 @@ import TodoList from "./components/TodoList";
 import { getTodos } from "./actions";
 import { ModeToggle } from "@/app/components/ModeToggle";
 
-const title = "ToDo App";
-const description = "World's BEST ToDo App";
+const title = "Todo App";
+const description = "World's BEST Todo App";
 
 export const metadata: Metadata = {
   title: title,
