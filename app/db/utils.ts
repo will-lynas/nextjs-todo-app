@@ -29,3 +29,10 @@ export async function createTodo(userId: string, title: string) {
     VALUES (${userId}, ${title})
   `;
 }
+
+export async function deleteTodo(id: number) {
+  await sql`
+    DELETE FROM todos
+    WHERE id = ${id}
+  `;
+}

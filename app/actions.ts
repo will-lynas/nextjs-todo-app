@@ -3,7 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { getTodos as dbGetTodos, createTodo as dbCreateTodo } from "./db/utils";
+import * as db from "./db/utils";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +18,7 @@ async function getUserId() {
 
 export async function getTodos() {
   const userId = await getUserId();
-  return await dbGetTodos(userId);
+  return await db.getTodos(userId);
 }
 
 export async function toggleTodo(id: number, completed: boolean) {
@@ -35,14 +35,12 @@ export async function createTodo(formData: FormData) {
   if (!title) return;
 
   const userId = await getUserId();
-  await dbCreateTodo(userId, title);
+  await db.createTodo(userId, title);
   revalidatePath("/");
 }
 
 export async function deleteTodo(id: number) {
   const userId = await getUserId();
-  await prisma.todo.delete({
-    where: { id, userId },
-  });
+  await db.deleteTodo(id);
   revalidatePath("/");
 }
