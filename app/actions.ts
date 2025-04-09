@@ -1,11 +1,8 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import * as db from "./db/utils";
-
-const prisma = new PrismaClient();
 
 async function getUserId() {
   const cookieStore = await cookies();
