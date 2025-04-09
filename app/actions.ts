@@ -3,7 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { getTodos as dbGetTodos } from "./db/utils";
+import { getTodos as dbGetTodos, createTodo as dbCreateTodo } from "./db/utils";
 
 const prisma = new PrismaClient();
 
@@ -35,9 +35,7 @@ export async function createTodo(formData: FormData) {
   if (!title) return;
 
   const userId = await getUserId();
-  await prisma.todo.create({
-    data: { title, userId },
-  });
+  await dbCreateTodo(userId, title);
   revalidatePath("/");
 }
 

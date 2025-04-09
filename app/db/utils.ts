@@ -22,3 +22,10 @@ export async function getTodos(userId: string): Promise<Todo[]> {
     userId: todo.user_id,
   }));
 }
+
+export async function createTodo(userId: string, title: string) {
+  await sql`
+    INSERT INTO todos (user_id, title)
+    VALUES (${userId}, ${title})
+  `;
+}
