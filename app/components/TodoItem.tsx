@@ -2,6 +2,7 @@
 
 import { useOptimistic, startTransition } from "react";
 import DeleteTodoDialog from "./DeleteTodoDialog";
+import { Button } from "@/components/ui/button";
 
 interface TodoItemProps {
   id: number;
@@ -24,27 +25,23 @@ export default function TodoItem({
   );
 
   return (
-    <>
-      <div className="flex items-center gap-2">
-        <li
-          onClick={() => {
-            startTransition(() => {
-              setOptimisticCompleted(!optimisticCompleted);
-              toggleTodo(id, completed);
-            });
-          }}
-          className="flex-1 p-4 bg-neutral-900 rounded-lg text-white hover:bg-neutral-800 transition-colors cursor-pointer"
-        >
-          <span
-            className={
-              optimisticCompleted ? "line-through text-neutral-500" : ""
-            }
-          >
-            {title}
-          </span>
-        </li>
-        <DeleteTodoDialog onDelete={() => onDelete(id)} title={title} />
-      </div>
-    </>
+    <div className="flex items-center gap-2">
+      <Button
+        variant="outline"
+        size="default"
+        className="flex-1 justify-start"
+        onClick={() => {
+          startTransition(() => {
+            setOptimisticCompleted(!optimisticCompleted);
+            toggleTodo(id, completed);
+          });
+        }}
+      >
+        <span className={optimisticCompleted ? "line-through opacity-70" : ""}>
+          {title}
+        </span>
+      </Button>
+      <DeleteTodoDialog onDelete={() => onDelete(id)} title={title} />
+    </div>
   );
 }

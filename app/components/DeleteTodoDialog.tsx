@@ -26,7 +26,7 @@ export default function DeleteTodoDialog({
         <Button
           variant="destructive"
           size="icon"
-          className="h-[52px] px-3"
+          className="px-3"
           aria-label="Delete todo"
         >
           🗑️
