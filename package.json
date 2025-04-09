@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate && prisma migrate deploy",
+    "postinstall": "node-pg-migrate up",
     "migrate": "node-pg-migrate"
   },
   "dependencies": {
