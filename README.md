@@ -1,6 +1,6 @@
-# todo-app
+# Todo App
 
-My first project using Next.js, deployed on Vercel.
+A Hello World Todo App. Made in Next.js with Shadcn components, deployed on Vercel.
 
 ## Gallery
 
